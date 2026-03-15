@@ -6,11 +6,39 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/health', methods=['GET'])
 def health_check():
-    """Simple health check endpoint."""
-    return jsonify({
+    """Comprehensive health check endpoint."""
+    health_status = {
         "status": "success",
-        "message": "Application is healthy"
-    }), 200
+        "message": "Application is healthy",
+        "services": {
+            "redis": "unknown",
+            "mongodb": "unknown"
+        }
+    }
+    
+    # Check Redis
+    try:
+        redis_ping = extensions.redis_client.ping()
+        health_status["services"]["redis"] = "connected" if redis_ping else "disconnected"
+    except Exception:
+        health_status["services"]["redis"] = "error"
+        health_status["status"] = "degraded"
+        health_status["message"] = "Some services are degraded"
+
+    # Check MongoDB
+    try:
+        if extensions.mongo_client:
+            extensions.mongo_client.admin.command('ping')
+            health_status["services"]["mongodb"] = "connected"
+        else:
+            health_status["services"]["mongodb"] = "disconnected"
+    except Exception:
+        health_status["services"]["mongodb"] = "error"
+        health_status["status"] = "degraded"
+        health_status["message"] = "Some services are degraded"
+
+    status_code = 200 if health_status["status"] == "success" else 503
+    return jsonify(health_status), status_code
 
 @bp.route('/health/redis', methods=['GET'])
 def redis_check():
