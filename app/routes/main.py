@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app.extensions import redis_client
+from app import extensions
 import redis
 
 bp = Blueprint('main', __name__)
@@ -17,7 +17,7 @@ def redis_check():
     """Endpoint to check Redis connection status."""
     try:
         # Ping the Redis server
-        redis_ping = redis_client.ping()
+        redis_ping = extensions.redis_client.ping()
         if redis_ping:
             return jsonify({
                 "status": "success",
