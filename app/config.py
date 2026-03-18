@@ -5,12 +5,12 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     
     # Redis Configuration
-    REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-    REDIS_PORT = int(os.environ.get('REDIS_PORT', 6379))
-    REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', None)
+    REDIS_HOST = os.environ.get('REDIS_HOST')
+    REDIS_PORT = int(os.environ.get('REDIS_PORT'))
+    REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
 
     # MongoDB Configuration
-    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb+srv://hasanabbasc_db_user:8yPxcVUOmfA9miqn@cluster0.vc5lpsh.mongodb.net/?appName=Cluster0')
+    MONGO_URI = os.environ.get('MONGO_URI')
 
     # JWT Configuration
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'default-jwt-secret-key')
