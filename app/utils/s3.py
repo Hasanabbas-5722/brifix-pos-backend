@@ -8,13 +8,13 @@ from app.utils.logger import logger
 def get_s3_client():
     return boto3.client(
         's3',
-        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID',"AKIAT3PWIE4CABIQNYF7"),
-        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY',"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"),
+        aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
         region_name=os.environ.get('AWS_REGION', 'ap-south-1')
     )
 
 def upload_file_to_s3(file_obj, folder='products'):
-    bucket_name = os.environ.get('AWS_S3_BUCKET_NAME',"brifix-pos")
+    bucket_name = os.environ.get('AWS_S3_BUCKET_NAME')
     
     if not bucket_name:
         # Fallback if S3 is not fully configured, prevent app breaking
