@@ -10,7 +10,7 @@ def get_s3_client():
         's3',
         aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
         aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
-        region_name=os.environ.get('AWS_REGION', 'ap-south-1')
+        region_name=os.environ.get('AWS_REGION')
     )
 
 def upload_file_to_s3(file_obj, folder='products'):
@@ -37,7 +37,7 @@ def upload_file_to_s3(file_obj, folder='products'):
                 "ContentType": file_obj.content_type,
             }
         )
-        url = f"https://{bucket_name}.s3.{os.environ.get('AWS_REGION', 'ap-south-1')}.amazonaws.com/{s3_key}"
+        url = f"https://{bucket_name}.s3.{os.environ.get('AWS_REGION')}.amazonaws.com/{s3_key}"
         return url
     except Exception as e:
         logger.error(f"Failed to upload to S3: {e}")
