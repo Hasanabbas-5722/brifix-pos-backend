@@ -46,4 +46,7 @@ def create_app(config_class=Config):
     from app.routes.payments import bp as payments_bp
     app.register_blueprint(payments_bp)
 
+    from app.routes.upload import bp as upload_bp
+    app.register_blueprint(upload_bp)
+
     return app

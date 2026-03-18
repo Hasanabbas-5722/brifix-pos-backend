@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Backend Flask API 
+  backend:
+    build: /root/brifix-pos-backend
+    container_name: brifix-pos-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      # Flask Configuration
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+      - SECRET_KEY=dev-secret-key-123
+      - PORT=5000
+      
+      # Redis Configuration (assuming external or linked redis, we define redis service below)
+      - REDIS_HOST=13.127.115.121
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
+      
+      # MongoDB Configuration
+      - MONGO_URI=mongodb+srv://hasanabbasc_db_user:Donsaale5722@cluster0.kclkpon.mongodb.net/?appName=Cluster0
+      
+      # JWT Configuration
+      - JWT_SECRET_KEY=super-secret-jwt-key
+      
+      # AWS S3 Uploads (for remote images)
+      - AWS_ACCESS_KEY_ID=AKIAT3PWIE4CABIQNYF7
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_REGION=ap-south-1
+      - AWS_S3_BUCKET_NAME=brifix-pos
+    depends_on:
+      - redis
+
+  # Frontend Next.js Dashboard
+  frontend:
+    build: /root/brifix-pos-frontend
+    container_name: brifix-pos-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Next.js configurations
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      # You can specify public env configs like backend API URLs here if needed
+      - NEXT_PUBLIC_API_URL=http://13.127.115.121:5000/api
+    depends_on:
+      - backend
+
+  # Redis caching service
+  redis:
+    image: redis:alpine
+    container_name: brifix-pos-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    # command: redis-server --requirepass your_redis_password_if_any

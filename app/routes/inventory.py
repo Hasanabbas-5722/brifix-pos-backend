@@ -14,7 +14,7 @@ def get_inventory():
     try:
         tenant_id = get_jwt()['tenant_id']
         products = list(db.products.find({"tenant_id": tenant_id}, {
-            "name": 1, "sku": 1, "stock": 1, "minStock": 1, "unit": 1, "category": 1
+            "name": 1, "stock": 1, "minStock": 1, "unit": 1, "category": 1
         }))
         
         for p in products:

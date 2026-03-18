@@ -57,7 +57,6 @@ def add_product():
         
         new_product = {
             "name": data.get('name'),
-            "sku": data.get('sku', ''),
             "barcode": data.get('barcode', ''),
             "category": data.get('category', 'all'),
             "price": float(data.get('price')),
